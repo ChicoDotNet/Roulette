@@ -1,0 +1,40 @@
+using Microsoft.AspNetCore.Mvc;
+using Web.Services;
+
+namespace Web.Controllers;
+
+[ApiController]
+[Route("[controller]")]
+public class RouletteController : ControllerBase
+{
+   
+    private readonly ILogger<RouletteController> _logger;
+    private readonly IRouletteService _service;
+
+    public RouletteController(ILogger<RouletteController> logger, IRouletteService service)
+    {
+        _logger = logger;
+        _service = service;
+    }
+
+    [HttpGet]
+    [Route("balance")]
+    public double Get()
+    {
+        return _service.AddBalance(0);
+    }
+
+    [HttpPost]
+    [Route("balance")]
+    public double AddBalance([FromBody]double amount)
+    {
+        return _service.AddBalance(amount);
+    }
+
+    [HttpGet]
+    [Route("bet")]
+    public double Bet([FromQuery] BetType type, [FromQuery]double amount, [FromQuery]int bet)
+    {
+        return _service.Bet(type, amount, bet);
+    }
+}
